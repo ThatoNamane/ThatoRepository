@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to your default branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14  # Change to your desired Node.js version
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build application
+      run: npm run build  # Replace with your build command
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14  # Change to your desired Node.js version
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run unit tests
+      run: npm test  # Replace with your test command
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to staging environment
+      run: |
+        # Add your deployment script/commands here
+        # For example: deploy.sh or az deployment command
